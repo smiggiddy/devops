@@ -10,10 +10,11 @@ import re
 load_dotenv()
 
 
-def get_s3_bucket(bucketname: str):
+def get_s3_bucket(bucketname: str, host: str):
     """returns bucket object based
 
     :param bucketname: name of s3 bucket
+    :param host: S3 endpoint URI
 
     return b: s3 bucket object
     """
@@ -22,7 +23,7 @@ def get_s3_bucket(bucketname: str):
     conn = boto.connect_s3(
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
-        host="us-east-1.linodeobjects.com",
+        host=host,
     )
     b = conn.get_bucket(bucketname)
 
@@ -80,6 +81,7 @@ def parse_arguments():
     # load cli flags
     parser = argparse.ArgumentParser()
     parser.add_argument("--bucket", help="bucket to parse for docker_backups")
+    parser.add_argument("--host", help="S3 bucket endpoint URI")
 
     return parser.parse_args()
 
@@ -87,7 +89,7 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
 
-    bucket = get_s3_bucket(args.bucket)
+    bucket = get_s3_bucket(bucketname=args.bucket, host=args.host)
     objects = get_docker_backup_objects(bucket)
     key_to_delete = get_key_to_delete(objects)
     delete_keys(keys_to_delete=key_to_delete, bucket=bucket)
