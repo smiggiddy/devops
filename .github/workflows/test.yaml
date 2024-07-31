@@ -1,0 +1,24 @@
+name: "CD For Cloud Resume API"
+
+on:
+  push:
+    branches: 
+    - main
+  workflow_dispatch:
+
+jobs:
+
+  google_auth_test:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    name: test auth
+    steps:
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: projects/623321734192/locations/global/workloadIdentityPools/github-pool/providers/github-gcp-provider-for-real
+
+
