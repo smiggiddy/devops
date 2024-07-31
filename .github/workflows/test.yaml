@@ -15,6 +15,8 @@ jobs:
       id-token: 'write'
     name: test auth
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
