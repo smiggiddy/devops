@@ -9,6 +9,7 @@ on:
 jobs:
 
   google_auth_test:
+    runs-on: ubuntu-latest
     permissions:
       contents: 'read'
       id-token: 'write'
